@@ -51,3 +51,9 @@ router_authentication.post('/',  (req: Request, res:Response) => {
 router_authentication.get('/verify-token', [verifyToken], (req: Request, res:Response) => {
     res.send('Valid token')
 })
+
+
+router_authentication.post('/logout', (req: Request, res:Response) => {
+    res.clearCookie("token");
+    res.end()
+})
