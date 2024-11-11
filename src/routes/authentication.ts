@@ -6,6 +6,7 @@ import * as bcrypt from 'bcrypt';
 import * as dotenv from "dotenv";
 import * as path from "path";
 import * as fs from "fs";
+import verifyToken from "../middleware/verifyToken";
 
 
 dotenv.config();
@@ -44,4 +45,9 @@ router_authentication.post('/',  (req: Request, res:Response) => {
             res.status(401).send('Invalid username or password');
         }
     });
+})
+
+
+router_authentication.get('/verify-token', [verifyToken], (req: Request, res:Response) => {
+    res.send('Valid token')
 })

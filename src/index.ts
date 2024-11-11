@@ -5,9 +5,12 @@ import { logMiddleware } from './middleware/middleware';
 import { myDataSource } from './database/DataSource';
 import { TestRepository } from './database/entities/Test/Test.repository';
 import { router_authentication } from './routes/authentication';
+const cookieParser = require('cookie-parser');
 
 var app = express();
 const PORT: number = 3000;
+
+app.use(cookieParser());
 
 
 app.get('/', [logMiddleware] ,function(req: Request, res: Response) {
