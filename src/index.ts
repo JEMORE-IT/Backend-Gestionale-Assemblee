@@ -5,6 +5,7 @@ import { logMiddleware } from './middleware/middleware';
 import { myDataSource } from './database/DataSource';
 import { router_authentication } from './routes/authentication';
 import { router_assembly } from './routes/assembly';
+import { router_member } from './routes/member';
 const cookieParser = require('cookie-parser');
 
 var app = express();
@@ -29,6 +30,7 @@ app.get('/', [logMiddleware] ,function(req: Request, res: Response) {
 
 
 app.use('/test', router_test)
+app.use('/member', router_member)
 app.use('/assembly', router_assembly)
 app.use('/authentication', router_authentication)
 

@@ -1,5 +1,6 @@
 import { DataSource } from "typeorm";
 import { Assemblea } from "./entities/Assemblea/Assemblea.entity";
+import { Socio } from "./entities/Socio/Socio.entity";
 
 export const myDataSource = new DataSource({
     type: "mysql", // change if needed
@@ -9,7 +10,7 @@ export const myDataSource = new DataSource({
     password: "E4TpodDrmhy8P7w5lqaN",
     database: "assemblee",
     entities: [
-        Assemblea
+        Assemblea, Socio
     ],
     logging: true, // set to false in production
     synchronize: true, // set to false in production
