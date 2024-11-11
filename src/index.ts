@@ -3,14 +3,15 @@ import { Request, Response } from 'express';
 import { router_test } from './routes/test';
 import { logMiddleware } from './middleware/middleware';
 import { myDataSource } from './database/DataSource';
-import { TestRepository } from './database/entities/Test/Test.repository';
 import { router_authentication } from './routes/authentication';
+import { router_assembly } from './routes/assembly';
 const cookieParser = require('cookie-parser');
 
 var app = express();
 const PORT: number = 3000;
 
 app.use(cookieParser());
+app.use(express.json())
 
 myDataSource
   .initialize()
@@ -28,6 +29,7 @@ app.get('/', [logMiddleware] ,function(req: Request, res: Response) {
 
 
 app.use('/test', router_test)
+app.use('/assembly', router_assembly)
 app.use('/authentication', router_authentication)
 
 app.listen(PORT, () => {

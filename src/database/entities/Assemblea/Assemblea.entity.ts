@@ -1,10 +1,10 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
 
 @Entity()
-export class Test {
+export class Assemblea {
     @PrimaryGeneratedColumn()
     id: number
 
-    @Column({ nullable: true })
-    counter: number
+    @Column({ type : 'date', nullable: false })
+    date: Date
 }
