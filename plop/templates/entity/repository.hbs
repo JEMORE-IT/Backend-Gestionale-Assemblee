@@ -1,0 +1,8 @@
+import { myDataSource } from "../../DataSource";
+import { {{name}} } from "./{{name}}.entity";
+
+export const {{name}}Repository = myDataSource.getRepository({{name}}).extend({
+    getTest() {
+        return this.find()
+    }
+})
