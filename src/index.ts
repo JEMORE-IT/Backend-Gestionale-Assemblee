@@ -12,6 +12,15 @@ const PORT: number = 3000;
 
 app.use(cookieParser());
 
+myDataSource
+  .initialize()
+  .then(() => {
+      console.log("Data Source has been initialized!")
+  })
+  .catch((err) => {
+      console.error("Error during Data Source initialization:", err)
+  })
+
 
 app.get('/', [logMiddleware] ,function(req: Request, res: Response) {
   res.send('Welcome to the backend!');

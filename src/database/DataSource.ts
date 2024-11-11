@@ -3,11 +3,11 @@ import { Test } from "./entities/Test/Test.entity";
 
 export const myDataSource = new DataSource({
     type: "mysql", // change if needed
-    host: "", // database ip
+    host: "qr.jemore.it", // database ip
     port: 3306,
-    username: "", // insert database information
-    password: "",
-    database: "",
+    username: "root", // insert database information
+    password: "E4TpodDrmhy8P7w5lqaN",
+    database: "assemblee",
     entities: [
         Test
     ],
