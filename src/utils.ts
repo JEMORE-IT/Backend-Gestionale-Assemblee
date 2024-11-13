@@ -13,3 +13,7 @@ export function checkParams(obj: Object, list: string[]): boolean {
 	});
 	return out
 }
+
+export function isNumber(string: string): boolean {
+	return !isNaN(+string)
+}

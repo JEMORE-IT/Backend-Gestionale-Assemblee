@@ -38,7 +38,7 @@ router_assembly.post('/', [verifyToken], async (req: Request, res:Response) => {
 
     try {
         const newAssembly = await AssembleaRepository.createAssembly(date)
-        const result = AssembleaRepository.save(newAssembly)
+        const result = await AssembleaRepository.save(newAssembly)
         return res.json(result);
     } catch {
         res.status(500).send('Errore nella scrittura sul database')
