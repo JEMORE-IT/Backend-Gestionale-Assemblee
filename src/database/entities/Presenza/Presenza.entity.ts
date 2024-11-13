@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne, Unique } from 'typeorm'
 import { Assemblea } from '../Assemblea/Assemblea.entity'
 import { Socio } from '../Socio/Socio.entity'
 
@@ -10,6 +10,7 @@ export enum PresenceType {
 }
 
 @Entity()
+@Unique(["assembly", "member"])
 export class Presenza {
     @PrimaryGeneratedColumn()
     id: number

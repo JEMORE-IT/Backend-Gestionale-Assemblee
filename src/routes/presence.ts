@@ -62,8 +62,6 @@ router_presence.post('/', [verifyToken], async (req: Request, res:Response) => {
     } catch {
         res.status(500).send('Errore nella scrittura sul database')
     }  
-
-    return res.sendStatus(200);
 })
 
 router_presence.delete('/:id', [checkId, verifyToken], async (req: Request, res:Response) => {
