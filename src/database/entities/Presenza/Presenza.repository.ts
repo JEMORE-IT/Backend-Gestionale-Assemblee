@@ -1,7 +1,7 @@
-import { myDataSource } from "../../DataSource";
-import { Assemblea } from "../Assemblea/Assemblea.entity";
-import { Socio } from "../Socio/Socio.entity";
 import { PresenceType, Presenza } from "./Presenza.entity";
+import { Assemblea } from "../Assemblea/Assemblea.entity";
+import { myDataSource } from "../../DataSource";
+import { Socio } from "../Socio/Socio.entity";
 
 export const PresenzaRepository = myDataSource.getRepository(Presenza).extend({
     async findAll(): Promise<Presenza[] | undefined> {

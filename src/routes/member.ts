@@ -33,8 +33,8 @@ router_member.post('/', [verifyToken], async (req: Request, res:Response) => {
     }
 
     try {
-        const newMember = await SocioRepository.createMember(req.body['name'])
-        const result = await SocioRepository.save(newMember)
+        const newMember: Socio = await SocioRepository.createMember(req.body['name'])
+        const result: Socio = await SocioRepository.save(newMember)
         return res.json(result);
     } catch {
         res.status(500).send('Errore nella scrittura sul database')

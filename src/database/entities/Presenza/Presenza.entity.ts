@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne, Unique } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, Unique } from 'typeorm'
 import { Assemblea } from '../Assemblea/Assemblea.entity'
 import { Socio } from '../Socio/Socio.entity'
 

@@ -1,6 +1,5 @@
 import * as express from 'express';
 import { Request, Response } from 'express';
-import { router_test } from './routes/test';
 import { logMiddleware } from './middleware/middleware';
 import { myDataSource } from './database/DataSource';
 import { router_authentication } from './routes/authentication';
@@ -30,7 +29,6 @@ app.get('/', [logMiddleware] ,function(req: Request, res: Response) {
 });
 
 
-app.use('/test', router_test)
 app.use('/member', router_member)
 app.use('/assembly', router_assembly)
 app.use('/presence', router_presence)

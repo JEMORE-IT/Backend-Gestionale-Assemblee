@@ -1,4 +1,3 @@
-import { resourceUsage } from "process";
 import { myDataSource } from "../../DataSource";
 import { Socio } from "./Socio.entity";
 

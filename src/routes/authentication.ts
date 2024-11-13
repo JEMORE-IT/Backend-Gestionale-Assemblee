@@ -1,4 +1,5 @@
 import { Router, Request, Response } from "express";
+import verifyToken from "../middleware/verifyToken";
 import { checkParams } from "../utils";
 import * as jwt from "jsonwebtoken";
 import * as express from "express";
@@ -6,7 +7,6 @@ import * as bcrypt from 'bcrypt';
 import * as dotenv from "dotenv";
 import * as path from "path";
 import * as fs from "fs";
-import verifyToken from "../middleware/verifyToken";
 
 
 dotenv.config();

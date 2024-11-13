@@ -56,8 +56,8 @@ router_presence.post('/', [verifyToken], async (req: Request, res:Response) => {
     }
 
     try {
-        const newPresence = await PresenzaRepository.createPresence(req.body["presenza"] as PresenceType, assembly, member)
-        const result = await PresenzaRepository.save(newPresence)
+        const newPresence: Presenza = await PresenzaRepository.createPresence(req.body["presenza"] as PresenceType, assembly, member)
+        const result: Presenza = await PresenzaRepository.save(newPresence)
         return res.json(result);
     } catch {
         res.status(500).send('Errore nella scrittura sul database')

@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, Unique, ManyToOne, OneToMany } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column, Unique, OneToMany } from 'typeorm'
 import { Presenza } from '../Presenza/Presenza.entity'
 
 @Unique('unique_name', ['name'])
