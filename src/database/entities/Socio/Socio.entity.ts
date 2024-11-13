@@ -7,6 +7,9 @@ export class Socio {
     @PrimaryGeneratedColumn()
     id: number
 
+    @Column({type: 'boolean', nullable: false, default: true})
+    active: boolean
+
     @Column({type: 'varchar', nullable: false })
     name: string
 

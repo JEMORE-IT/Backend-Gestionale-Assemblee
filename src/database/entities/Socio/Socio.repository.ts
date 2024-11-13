@@ -1,3 +1,4 @@
+import { resourceUsage } from "process";
 import { myDataSource } from "../../DataSource";
 import { Socio } from "./Socio.entity";
 
@@ -12,6 +13,11 @@ export const SocioRepository = myDataSource.getRepository(Socio).extend({
                 id : id
             }
         })
+    },
+
+    async setActive(member: Socio, active: boolean): Promise<Socio | undefined> {
+        member.active = active
+        return this.save(member)
     },
 
     async deleteById(id: number): Promise<void> {
