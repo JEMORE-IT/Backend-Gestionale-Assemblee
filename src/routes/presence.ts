@@ -10,8 +10,9 @@ import { checkParams, isNumber } from "../utils";
 import checkId from "../middleware/checkiId";
 
 export var router_presence: Router = Router()
+router_presence.use(verifyToken)
 
-router_presence.get('/', [verifyToken], async (req: Request, res:Response) => {
+router_presence.get('/', async (req: Request, res:Response) => {
     try {
         const result: Presenza[] = await PresenzaRepository.findAll()
         return res.json(result)
@@ -21,7 +22,7 @@ router_presence.get('/', [verifyToken], async (req: Request, res:Response) => {
     }
 })
 
-router_presence.get('/:id', [checkId, verifyToken], async (req: Request, res:Response) => {
+router_presence.get('/:id', [checkId], async (req: Request, res:Response) => {
     try {
         const result: Presenza = await  PresenzaRepository.findbyId(+req.params.id)
         return res.json(result)
@@ -30,7 +31,7 @@ router_presence.get('/:id', [checkId, verifyToken], async (req: Request, res:Res
     }
 })
 
-router_presence.post('/', [verifyToken], async (req: Request, res:Response) => {
+router_presence.post('/', async (req: Request, res:Response) => {
     const params = ["presenza", "assembly", "member"];
     if (!checkParams(req.body, params)) {
         return res.status(400).json({ message: 'Parametri nel body non validi' });
@@ -64,7 +65,7 @@ router_presence.post('/', [verifyToken], async (req: Request, res:Response) => {
     }  
 })
 
-router_presence.delete('/:id', [checkId, verifyToken], async (req: Request, res:Response) => {
+router_presence.delete('/:id', [checkId], async (req: Request, res:Response) => {
     try {
         const result = await PresenzaRepository.deleteById(+req.params.id)
         return res.json(result);

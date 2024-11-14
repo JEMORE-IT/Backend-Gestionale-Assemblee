@@ -6,8 +6,9 @@ import checkId from "../middleware/checkiId";
 import { checkParams } from "../utils";
 
 export var router_assembly: Router = Router()
+router_assembly.use(verifyToken)
 
-router_assembly.get('/', [verifyToken], async (req: Request, res:Response) => {
+router_assembly.get('/', async (req: Request, res:Response) => {
     try {
         const result: Assemblea[] = await  AssembleaRepository.findAll()
         return res.json(result)
@@ -16,7 +17,7 @@ router_assembly.get('/', [verifyToken], async (req: Request, res:Response) => {
     }
 })
 
-router_assembly.get('/:id', [checkId, verifyToken], async (req: Request, res:Response) => {
+router_assembly.get('/:id', [checkId], async (req: Request, res:Response) => {
     try {
         const result: Assemblea = await  AssembleaRepository.findbyId(+req.params.id)
         return res.json(result)
@@ -25,7 +26,7 @@ router_assembly.get('/:id', [checkId, verifyToken], async (req: Request, res:Res
     }
 })
 
-router_assembly.post('/', [verifyToken], async (req: Request, res:Response) => {
+router_assembly.post('/', async (req: Request, res:Response) => {
     const params = ["date"];
     if (!checkParams(req.body, params)) {
         return res.status(400).json({ message: 'Parametri nel body non validi' });
@@ -45,7 +46,7 @@ router_assembly.post('/', [verifyToken], async (req: Request, res:Response) => {
     }    
 })
 
-router_assembly.delete('/:id', [checkId, verifyToken], async (req: Request, res:Response) => {
+router_assembly.delete('/:id', [checkId], async (req: Request, res:Response) => {
     try {
         const result = await AssembleaRepository.deleteById(+req.params.id)
         return res.json(result);

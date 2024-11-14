@@ -6,8 +6,9 @@ import checkId from "../middleware/checkiId";
 import { checkParams, isNumber } from "../utils";
 
 export var router_member: Router = Router()
+router_member.use(verifyToken)
 
-router_member.get('/', [verifyToken], async (req: Request, res:Response) => {
+router_member.get('/', async (req: Request, res:Response) => {
     try {
         const result: Socio[] = await SocioRepository.findAll()
         return res.json(result)
@@ -17,7 +18,7 @@ router_member.get('/', [verifyToken], async (req: Request, res:Response) => {
     }
 })
 
-router_member.get('/:id', [checkId, verifyToken], async (req: Request, res:Response) => {
+router_member.get('/:id', [checkId], async (req: Request, res:Response) => {
     try {
         const result: Socio = await  SocioRepository.findbyId(+req.params.id)
         return res.json(result)
@@ -26,7 +27,7 @@ router_member.get('/:id', [checkId, verifyToken], async (req: Request, res:Respo
     }
 })
 
-router_member.post('/', [verifyToken], async (req: Request, res:Response) => {
+router_member.post('/', async (req: Request, res:Response) => {
     const params = ["name"];
     if (!checkParams(req.body, params)) {
         return res.status(400).json({ message: 'Parametri nel body non validi' });
@@ -41,7 +42,7 @@ router_member.post('/', [verifyToken], async (req: Request, res:Response) => {
     }  
 })
 
-router_member.put('/active/:id', [checkId, verifyToken], async (req: Request, res:Response) =>  {
+router_member.put('/active/:id', [checkId], async (req: Request, res:Response) =>  {
     const params = ["active"];
     if (!checkParams(req.body, params)) {
         return res.status(400).json({ message: 'Parametri nel body non validi' });
@@ -67,7 +68,7 @@ router_member.put('/active/:id', [checkId, verifyToken], async (req: Request, re
     }
 })
 
-router_member.delete('/:id', [checkId, verifyToken], async (req: Request, res:Response) => {
+router_member.delete('/:id', [checkId], async (req: Request, res:Response) => {
     try {
         const result = await SocioRepository.deleteById(+req.params.id)
         return res.json(result);
