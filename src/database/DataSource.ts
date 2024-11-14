@@ -1,4 +1,5 @@
 import { Assemblea } from "./entities/Assemblea/Assemblea.entity";
+import { Delega } from "./entities/Delega/Delega.entity";
 import { Presenza } from "./entities/Presenza/Presenza.entity";
 import { Socio } from "./entities/Socio/Socio.entity";
 import { DataSource } from "typeorm";
@@ -11,7 +12,7 @@ export const myDataSource = new DataSource({
     password: "E4TpodDrmhy8P7w5lqaN",
     database: "assemblee",
     entities: [
-        Assemblea, Socio, Presenza
+        Assemblea, Socio, Presenza, Delega
     ],
     logging: true, // set to false in production
     synchronize: true, // set to false in production

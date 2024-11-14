@@ -6,6 +6,7 @@ import { router_authentication } from './routes/authentication';
 import { router_assembly } from './routes/assembly';
 import { router_member } from './routes/member';
 import { router_presence } from './routes/presence';
+import { router_delegation } from './routes/delegation';
 const cookieParser = require('cookie-parser');
 
 var app = express();
@@ -32,6 +33,7 @@ app.get('/', [logMiddleware] ,function(req: Request, res: Response) {
 app.use('/member', router_member)
 app.use('/assembly', router_assembly)
 app.use('/presence', router_presence)
+app.use('/delegation', router_delegation)
 app.use('/authentication', router_authentication)
 
 app.listen(PORT, () => {

@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm'
 import { Presenza } from '../Presenza/Presenza.entity'
+import { Delega } from '../Delega/Delega.entity'
 
 @Entity()
 export class Assemblea {
@@ -11,4 +12,7 @@ export class Assemblea {
 
     @OneToMany(() => Presenza, (presenza) => presenza.assembly, { cascade : true, onDelete : 'CASCADE' })
     presenze: Presenza[]
+
+    @OneToMany(() => Delega, (delega) => delega.assembly, { cascade : true, onDelete : 'CASCADE' })
+    deleghe: Delega[]
 }

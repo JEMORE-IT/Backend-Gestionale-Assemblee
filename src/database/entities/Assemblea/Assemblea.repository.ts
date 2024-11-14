@@ -3,13 +3,29 @@ import { Assemblea } from "./Assemblea.entity";
 
 export const AssembleaRepository = myDataSource.getRepository(Assemblea).extend({
     async findAll(): Promise<Assemblea[] | undefined> {
-        return this.find()
+        return this.find({
+            relations : {
+                presenze: {
+                    member: true
+                },
+                deleghe: {
+                    delegante: true,
+                    delegato: true
+                }
+            }
+        })
     },
     
     async findbyId(id: number): Promise<Assemblea | undefined> {
         return this.findOne({
             where : {
                 id : id
+            },
+            relations : {
+                presenze: {
+                    member: true
+                },
+                deleghe: true
             }
         })
     },

@@ -17,6 +17,10 @@ export const PresenzaRepository = myDataSource.getRepository(Presenza).extend({
         return this.findOne({
             where : {
                 id : id
+            },
+            relations : {
+                assembly : true,
+                member : true
             }
         })
     },
