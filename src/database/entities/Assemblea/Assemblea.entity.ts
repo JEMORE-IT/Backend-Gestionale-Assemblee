@@ -10,9 +10,9 @@ export class Assemblea {
     @Column({ type : 'date', nullable: false })
     date: Date
 
-    @OneToMany(() => Presenza, (presenza) => presenza.assembly, { cascade : true, onDelete : 'CASCADE' })
+    @OneToMany(() => Presenza, (presenza) => presenza.assembly, { cascade : true, onDelete : 'CASCADE', nullable: false })
     presenze: Presenza[]
 
-    @OneToMany(() => Delega, (delega) => delega.assembly, { cascade : true, onDelete : 'CASCADE' })
+    @OneToMany(() => Delega, (delega) => delega.assembly, { cascade : true, onDelete : 'CASCADE', nullable: false })
     deleghe: Delega[]
 }

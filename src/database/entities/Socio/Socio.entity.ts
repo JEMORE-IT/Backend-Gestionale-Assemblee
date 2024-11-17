@@ -14,12 +14,12 @@ export class Socio {
     @Column({type: 'varchar', nullable: false })
     name: string
 
-    @OneToMany(() => Presenza, (presenza) => presenza.presenza, { cascade : false })
+    @OneToMany(() => Presenza, (presenza) => presenza.presenza, { cascade : false, nullable: false  })
     attendance: Presenza[]
 
-    @OneToMany(() => Delega, (delega) => delega.delegato, { cascade : false })
+    @OneToMany(() => Delega, (delega) => delega.delegato, { cascade : false, nullable: false  })
     delegheRicevute: Delega[]
 
-    @OneToMany(() => Delega, (delega) => delega.delegante, { cascade : false })
+    @OneToMany(() => Delega, (delega) => delega.delegante, { cascade : false, nullable: false  })
     delegheDate: Delega[]
 }

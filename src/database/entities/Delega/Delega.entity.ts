@@ -8,12 +8,12 @@ export class Delega {
     @PrimaryGeneratedColumn()
     id: number
 
-    @ManyToOne(() => Assemblea, (assemblea) => assemblea.deleghe, { cascade : false})
+    @ManyToOne(() => Assemblea, (assemblea) => assemblea.deleghe, { cascade : false , nullable: false })
     assembly: Assemblea
 
-    @ManyToOne(() => Socio, (socio) => socio.delegheDate)
+    @ManyToOne(() => Socio, (socio) => socio.delegheDate, { cascade : false , nullable: false })
     delegante: Socio
 
-    @ManyToOne(() => Socio, (socio) => socio.delegheRicevute)
+    @ManyToOne(() => Socio, (socio) => socio.delegheRicevute, { cascade : false , nullable: false })
     delegato: Socio
 }

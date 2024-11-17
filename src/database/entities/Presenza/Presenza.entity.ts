@@ -19,9 +19,9 @@ export class Presenza {
     @Column({ nullable: false })
     presenza: PresenceType
 
-    @ManyToOne(() => Assemblea, (assemblea) => assemblea.presenze, { cascade : false})
+    @ManyToOne(() => Assemblea, (assemblea) => assemblea.presenze, { cascade : false , nullable: false })
     assembly: Assemblea
 
-    @ManyToOne(() => Socio, (socio) => socio.attendance, { cascade : false})
+    @ManyToOne(() => Socio, (socio) => socio.attendance, { cascade : false, nullable: false })
     member: Socio
 }
