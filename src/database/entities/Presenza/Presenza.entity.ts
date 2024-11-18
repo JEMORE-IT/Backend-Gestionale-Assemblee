@@ -1,7 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, Unique } from 'typeorm'
 import { Assemblea } from '../Assemblea/Assemblea.entity'
 import { Socio } from '../Socio/Socio.entity'
-import { Delega } from '../Delega/Delega.entity'
 
 export enum PresenceType {
     presente = 1,
