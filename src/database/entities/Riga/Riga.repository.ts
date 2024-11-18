@@ -1,10 +1,15 @@
+import { resourceUsage } from "process";
 import { myDataSource } from "../../DataSource";
 import { Assemblea } from "../Assemblea/Assemblea.entity";
 import { Riga } from "./Riga.entity";
 
 export const RigaRepository = myDataSource.getRepository(Riga).extend({
     async findAll(): Promise<Riga[] | undefined> {
-        return this.find()
+        return this.find({
+            relations: {
+                votes: true
+            }
+        })
     },
 
     async findbyId(id: number): Promise<Riga | undefined> {

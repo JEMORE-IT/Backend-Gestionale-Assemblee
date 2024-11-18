@@ -1,6 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, Unique } from 'typeorm'
 import { Socio } from '../Socio/Socio.entity'
-import { Assemblea } from '../Assemblea/Assemblea.entity'
 import { Riga } from '../Riga/Riga.entity'
 
 export enum VoteType {
@@ -10,6 +9,7 @@ export enum VoteType {
 }
 
 @Entity()
+@Unique(["member", "riga"])
 export class Voto {
     @PrimaryGeneratedColumn()
     id: number

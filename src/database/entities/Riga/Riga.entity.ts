@@ -2,12 +2,6 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne } from 'ty
 import { Assemblea } from '../Assemblea/Assemblea.entity'
 import { Voto } from '../Voto/Voto.entity'
 
-export enum VoteType {
-    favorevole = 1,
-    contrario = 2,
-    astenuto = 0
-}
-
 @Entity()
 export class Riga {
     @PrimaryGeneratedColumn()

@@ -7,6 +7,8 @@ import { router_assembly } from './routes/assembly';
 import { router_member } from './routes/member';
 import { router_presence } from './routes/presence';
 import { router_delegation } from './routes/delegation';
+import { router_riga } from './routes/riga';
+import { router_vote } from './routes/vote';
 const cookieParser = require('cookie-parser');
 
 var app = express();
@@ -30,6 +32,8 @@ app.get('/', [logMiddleware] ,function(req: Request, res: Response) {
 });
 
 
+app.use('/vote', router_vote)
+app.use('/line', router_riga)
 app.use('/member', router_member)
 app.use('/assembly', router_assembly)
 app.use('/presence', router_presence)

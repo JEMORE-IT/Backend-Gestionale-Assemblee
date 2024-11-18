@@ -11,7 +11,8 @@ export const AssembleaRepository = myDataSource.getRepository(Assemblea).extend(
                 deleghe: {
                     delegante: true,
                     delegato: true
-                }
+                },
+                righe: true
             }
         })
     },
