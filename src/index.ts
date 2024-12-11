@@ -1,5 +1,4 @@
-import * as express from 'express';
-import { Request, Response } from 'express';
+import express, { Request, Response } from 'express';
 import { logMiddleware } from './middleware/middleware';
 import { myDataSource } from './database/DataSource';
 import { router_authentication } from './routes/authentication';
@@ -10,11 +9,17 @@ import { router_delegation } from './routes/delegation';
 import { router_riga } from './routes/riga';
 import { router_vote } from './routes/vote';
 const cookieParser = require('cookie-parser');
+import cors from 'cors'
 
 var app = express();
-const PORT: number = 3000;
+const PORT: number = 80;
 
 app.use(cookieParser());
+app.use(cors({
+  origin: '*', // Domini permessi per le richieste
+  credentials: true, // Permetti l'invio di cookie
+  exposedHeaders: ['Content-Disposition'], // Esponi l'intestazione 'Content-Disposition'
+}));
 app.use(express.json())
 
 myDataSource
