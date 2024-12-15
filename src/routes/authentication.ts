@@ -34,8 +34,8 @@ router_authentication.post('/',  (req: Request, res:Response) => {
 
             // Imposta il cookie HTTP-only
             res.cookie('token', token, {
-                httpOnly: true,
-                secure: process.env.NODE_ENV === 'production',
+                httpOnly: false, // Imposta httpOnly a false
+                secure: true,
                 sameSite: 'none',
                 maxAge: 3600000 // 1 ora in millisecondi
             });

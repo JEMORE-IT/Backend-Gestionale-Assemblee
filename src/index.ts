@@ -16,7 +16,7 @@ const PORT: number = 80;
 
 app.use(cookieParser());
 app.use(cors({
-  origin: '*', // Domini permessi per le richieste
+  origin: 'http://localhost:3000', // Domini permessi per le richieste
   credentials: true, // Permetti l'invio di cookie
   exposedHeaders: ['Content-Disposition'], // Esponi l'intestazione 'Content-Disposition'
 }));
