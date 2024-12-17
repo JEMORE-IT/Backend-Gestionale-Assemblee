@@ -11,6 +11,7 @@ import * as fs from "fs";
 
 dotenv.config();
 const passwordHash = process.env.PASSWORD
+const username = process.env.USERNAME_LOGIN
 
 export var router_authentication: Router = Router()
 router_authentication.use(express.json());
@@ -20,9 +21,14 @@ var privateKey = fs.readFileSync(path.resolve(__dirname, '../keys/private.key'),
 const payload = { "payload": "payload" };
 
 router_authentication.post('/',  (req: Request, res:Response) => {
-    var param = ['password'];
+    var param = ['password', 'username'];
     if (!checkParams(req.body, param)) {
         return res.status(400).json({ message: 'Parametri nel body non validi' });
+    }
+
+    if (req.body["username"] != username) {
+        console.log (username)
+        return res.status(401).send('Invalid username or password');
     }
 
     bcrypt.compare(req.body['password'], passwordHash, (err: Error | null, result: boolean) => {
