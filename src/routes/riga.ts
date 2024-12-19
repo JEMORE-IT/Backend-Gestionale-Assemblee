@@ -61,3 +61,20 @@ router_riga.delete('/:id', [checkId],  async (req: Request, res:Response) => {
         res.status(500).send('Errore nella scrittura sul database')
     }
 })
+
+router_riga.get('/results/:id', [checkId], async (req: Request, res: Response) => {
+    const rigaId = +req.params.id;  // Converti l'ID in un numero
+  
+    try {
+        const results = await RigaRepository.getVotingResultByRigaId(rigaId);
+
+        if (results === null) {
+            return res.status(404).json({ message: 'Nessun voto trovato o Riga non esistente' });
+        }
+
+        return res.json(results);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Errore nel calcolo del risultato delle votazioni');
+    }
+})
