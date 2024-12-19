@@ -39,4 +39,14 @@ export const AssembleaRepository = myDataSource.getRepository(Assemblea).extend(
         const newAssembly = await this.create({date : date})
         return this.save(newAssembly)
     },
+
+    async updateAssembly(id: number, data: Partial<Assemblea>): Promise<Assemblea | undefined> {
+        const assembly = await this.findOne({ where: { id } });
+        if (!assembly) {
+            throw new Error(`Assemblea con ID ${id} non trovata`);
+        }
+
+        Object.assign(assembly, data);
+        return this.save(assembly);
+    },
 })

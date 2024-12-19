@@ -54,3 +54,19 @@ router_assembly.delete('/:id', [checkId], async (req: Request, res:Response) => 
         res.status(500).send('Errore nella scrittura sul database')
     }
 })
+
+router_assembly.put('/:id', [checkId], async (req: Request, res: Response) => {
+    const id: number = +req.params.id;
+    const data: Partial<Assemblea> = req.body;
+
+    try {
+        const updatedAssembly: Assemblea | undefined = await AssembleaRepository.updateAssembly(id, data);
+        if (!updatedAssembly) {
+            return res.status(404).json({ message: 'Assemblea non trovata' });
+        }
+        return res.json(updatedAssembly);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).send('Errore nella scrittura sul database');
+    }
+})

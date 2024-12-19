@@ -75,6 +75,6 @@ router_riga.get('/results/:id', [checkId], async (req: Request, res: Response) =
         return res.json(results);
     } catch (err) {
         console.error(err);
-        res.status(500).send('Errore nel calcolo del risultato delle votazioni');
+        return res.status(500).send('Errore nel calcolo del risultato delle votazioni');
     }
 })
