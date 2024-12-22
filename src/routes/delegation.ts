@@ -31,6 +31,23 @@ router_delegation.get('/:id', [checkId], async (req: Request, res:Response) => {
     }
 })
 
+router_delegation.get('/assembly/:id', [checkId], async (req: Request, res: Response) => {
+    const assemblyId = +req.params.id;
+
+    try {
+        const assembly = await AssembleaRepository.findbyId(assemblyId);
+        if (!assembly) {
+            return res.status(404).json({ message: 'Assemblea non trovata' });
+        }
+
+        const deleghe = await DelegaRepository.findByAssemblyId(assemblyId);
+        return res.json(deleghe);
+    } catch (err) {
+        console.log(err);
+        res.status(500).send('Errore nella lettura del database');
+    }
+});
+
 router_delegation.post('/', async (req: Request, res:Response) => {
     const params = ["assembly", "delegante", "delegato"];
     if (!checkParams(req.body, params)) {

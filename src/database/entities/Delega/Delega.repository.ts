@@ -35,4 +35,19 @@ export const DelegaRepository = myDataSource.getRepository(Delega).extend({
         const newDelega = await this.create({assembly: assembly, delegante: delegante, delegato:delegato})
         return this.save(newDelega)
     },
+
+    async findByAssemblyId(assemblyId: number): Promise<Delega[] | undefined> {
+        return this.find({
+            where: {
+                assembly: {
+                    id: assemblyId
+                }
+            },
+            relations: {
+                assembly: true,
+                delegante: true,
+                delegato: true
+            }
+        });
+    },
 })
