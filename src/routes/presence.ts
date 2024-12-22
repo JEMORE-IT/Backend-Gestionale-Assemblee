@@ -31,6 +31,23 @@ router_presence.get('/:id', [checkId], async (req: Request, res:Response) => {
     }
 })
 
+router_presence.get('/assembly/:id', [checkId], async (req: Request, res: Response) => {
+    const assemblyId = +req.params.id;
+
+    try {
+        const assembly = await AssembleaRepository.findbyId(assemblyId);
+        if (!assembly) {
+            return res.status(404).json({ message: 'Assemblea non trovata' });
+        }
+
+        const presenze = await PresenzaRepository.findByAssemblyId(assemblyId);
+        return res.json(presenze);
+    } catch (err) {
+        console.log(err);
+        res.status(500).send('Errore nella lettura del database');
+    }
+});
+
 router_presence.post('/', async (req: Request, res:Response) => {
     const params = ["presenza", "assembly", "member"];
     if (!checkParams(req.body, params)) {

@@ -33,4 +33,18 @@ export const PresenzaRepository = myDataSource.getRepository(Presenza).extend({
         const newPresence = await this.create({ presenza: presenza, assembly: assembly, member: member })
         return this.save(newPresence)
     },
+
+    async findByAssemblyId(assemblyId: number): Promise<Presenza[] | undefined> {
+        return this.find({
+            where: {
+                assembly: {
+                    id: assemblyId
+                }
+            },
+            relations: {
+                assembly: true,
+                member: true
+            }
+        });
+    },
 })
