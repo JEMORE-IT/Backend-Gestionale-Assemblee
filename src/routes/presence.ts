@@ -90,3 +90,43 @@ router_presence.delete('/:id', [checkId], async (req: Request, res:Response) => 
         res.status(500).send('Errore nella scrittura sul database')
     }
 })
+
+router_presence.post('/bulk-create', async (req: Request, res: Response) => {
+    if (!Array.isArray(req.body)) {
+        return res.status(400).json({ message: 'Il body deve essere un array' });
+    }
+
+    try {
+        const presenze = req.body;
+        const results = [];
+        for (const presenza of presenze) {
+            const { presenza: presenzaType, assembly, member } = presenza;
+
+            if (!Object.values(PresenceType).includes(presenzaType)) {
+                return res.status(400).json({ message: 'Parametro presenza non valido' });
+            }
+            if (!isNumber(assembly)) {
+                return res.status(400).json({ message: 'Parametro assembly non valido' });
+            }
+            if (!isNumber(member)) {
+                return res.status(400).json({ message: 'Parametro member non valido' });
+            }
+
+            const assemblyEntity: Assemblea = await AssembleaRepository.findbyId(+assembly);
+            const memberEntity: Socio = await SocioRepository.findbyId(+member);
+            if (!assemblyEntity) {
+                return res.status(400).json({ message: 'Assemblea non esistente' });
+            }
+            if (!memberEntity) {
+                return res.status(400).json({ message: 'Socio non esistente' });
+            }
+
+            const newPresence: Presenza = await PresenzaRepository.createPresence(presenzaType, assemblyEntity, memberEntity);
+            results.push(newPresence);
+        }
+        return res.json(results);
+    } catch (err) {
+        console.log(err);
+        res.status(500).send('Errore nella scrittura sul database');
+    }
+});
