@@ -65,6 +65,46 @@ router_vote.post('/', async (req: Request, res:Response) => {
     } 
 })
 
+router_vote.post('/bulk-create', async (req: Request, res: Response) => {
+    if (!Array.isArray(req.body)) {
+        return res.status(400).json({ message: 'Il body deve essere un array' });
+    }
+
+    try {
+        const voti = req.body;
+        const results = [];
+        for (const voto of voti) {
+            const { vote, member, riga } = voto;
+
+            if (!Object.values(VoteType).includes(vote)) {
+                return res.status(400).json({ message: 'Parametro vote non valido' });
+            }
+            if (!isNumber(member)) {
+                return res.status(400).json({ message: 'Parametro member non valido' });
+            }
+            if (!isNumber(riga)) {
+                return res.status(400).json({ message: 'Parametro riga non valido' });
+            }
+
+            const memberEntity: Socio = await SocioRepository.findbyId(+member);
+            const rigaEntity: Riga = await RigaRepository.findbyId(+riga);
+            if (!memberEntity) {
+                return res.status(400).json({ message: 'Socio non esistente' });
+            }
+            if (!rigaEntity) {
+                return res.status(400).json({ message: 'Riga non esistente' });
+            }
+
+            const newVoto: Voto = await VotoRepository.createVote(vote as VoteType, memberEntity, rigaEntity);
+            results.push(newVoto);
+        }
+        return res.json(results);
+    } catch (err) {
+        console.log(err);
+        res.status(500).send('Errore nella scrittura sul database');
+    }
+});
+
 router_vote.delete('/:id', [checkId], async (req: Request, res:Response) => {
     try {
         const result = await VotoRepository.deleteById(+req.params.id)
