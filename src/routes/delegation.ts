@@ -48,7 +48,7 @@ router_delegation.get('/assembly/:id', [checkId], async (req: Request, res: Resp
     }
 });
 
-router_delegation.post('/', async (req: Request, res:Response) => {
+router_delegation.post('/', async (req: Request, res: Response) => {
     const params = ["assembly", "delegante", "delegato"];
     if (!checkParams(req.body, params)) {
         return res.status(400).json({ message: 'Parametri nel body non validi' });
@@ -89,13 +89,60 @@ router_delegation.post('/', async (req: Request, res:Response) => {
     } catch {
         res.status(500).send('Errore nella scrittura sul database')
     }  
-})
+});
 
-router_delegation.delete('/:id', [checkId] ,async (req: Request, res:Response) => {
+router_delegation.post('/bulk-create', async (req: Request, res: Response) => {
+    if (!Array.isArray(req.body)) {
+        return res.status(400).json({ message: 'Il body deve essere un array' });
+    }
+
     try {
-        const result = await DelegaRepository.deleteById(+req.params.id)
+        const deleghe = req.body;
+        const results = [];
+        for (const delega of deleghe) {
+            const { assembly, delegante, delegato } = delega;
+
+            if (!isNumber(assembly)) {
+                return res.status(400).json({ message: 'Parametro assembly non valido' });
+            }
+            if (!isNumber(delegante)) {
+                return res.status(400).json({ message: 'Parametro delegante non valido' });
+            }
+            if (!isNumber(delegato)) {
+                return res.status(400).json({ message: 'Parametro delegato non valido' });
+            }
+            if (delegante === delegato) {
+                return res.status(400).json({ message: 'Delegante e delegato non possono essere la stessa persona' });
+            }
+
+            const assemblyEntity: Assemblea = await AssembleaRepository.findbyId(+assembly);
+            const deleganteEntity: Socio = await SocioRepository.findbyId(+delegante);
+            const delegatoEntity: Socio = await SocioRepository.findbyId(+delegato);
+            if (!assemblyEntity) {
+                return res.status(400).json({ message: 'Assemblea non esistente' });
+            }
+            if (!deleganteEntity) {
+                return res.status(400).json({ message: 'Delegante non esistente' });
+            }
+            if (!delegatoEntity) {
+                return res.status(400).json({ message: 'Delegato non esistente' });
+            }
+
+            const newDelega: Delega = await DelegaRepository.createDelega(assemblyEntity, deleganteEntity, delegatoEntity);
+            results.push(newDelega);
+        }
+        return res.json(results);
+    } catch (err) {
+        console.log(err);
+        res.status(500).send('Errore nella scrittura sul database');
+    }
+});
+
+router_delegation.delete('/:id', [checkId], async (req: Request, res: Response) => {
+    try {
+        const result = await DelegaRepository.deleteById(+req.params.id);
         return res.json(result);
     } catch {
-        res.status(500).send('Errore nella scrittura sul database')
+        res.status(500).send('Errore nella scrittura sul database');
     }
-})
+});
