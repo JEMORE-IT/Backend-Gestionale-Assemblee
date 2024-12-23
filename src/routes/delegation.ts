@@ -22,7 +22,7 @@ router_delegation.get('/', async (req: Request, res:Response) => {
     }
 })
 
-router_delegation.get('/:id', [checkId], async (req: Request, res:Response) => {
+router_delegation.get('/:id', [checkId], async (req: Request, res: Response) => {
     try {
         const result: Delega = await  DelegaRepository.findbyId(+req.params.id)
         return res.json(result)
@@ -64,10 +64,9 @@ router_delegation.post('/', async (req: Request, res: Response) => {
         return res.status(400).json({ message: 'Parametro delegato non valido' });
     }
 
-    if (req.body["delegato"] == (req.body["delegante"])) {
-        return res.status(400).json({ message: 'Delegante e delegato non possono essere la stessa persona' });
+    if (req.body["delegato"] == req.body["delegante"]) {
+        return res.status(400).json({ message: 'Delegante e delegato devono essere persone distinte' });
     }
-    
 
     const assembly: Assemblea = await AssembleaRepository.findbyId(+req.body["assembly"])
     const delegante: Socio = await SocioRepository.findbyId(+req.body["delegante"])
@@ -76,10 +75,10 @@ router_delegation.post('/', async (req: Request, res: Response) => {
         return res.status(400).json({ message: 'Assemblea non esistente' });
     }
     if (!delegante) {
-        return res.status(400).json({ message: 'delegante non esistente' });
+        return res.status(400).json({ message: 'Delegante non esistente' });
     }
     if (!delegato) {
-        return res.status(400).json({ message: 'delegato non esistente' });
+        return res.status(400).json({ message: 'Delegato non esistente' });
     }
 
     try {
@@ -112,7 +111,7 @@ router_delegation.post('/bulk-create', async (req: Request, res: Response) => {
                 return res.status(400).json({ message: 'Parametro delegato non valido' });
             }
             if (delegante === delegato) {
-                return res.status(400).json({ message: 'Delegante e delegato non possono essere la stessa persona' });
+                return res.status(400).json({ message: 'Delegante e delegato devono essere persone distinte' });
             }
 
             const assemblyEntity: Assemblea = await AssembleaRepository.findbyId(+assembly);
