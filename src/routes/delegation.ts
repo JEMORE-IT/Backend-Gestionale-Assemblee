@@ -131,8 +131,7 @@ router_delegation.post('/bulk-create', async (req: Request, res: Response) => {
             results.push(newDelega);
         }
         return res.json(results);
-    } catch (err) {
-        console.log(err);
+    } catch {
         res.status(500).send('Errore nella scrittura sul database');
     }
 });

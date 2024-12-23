@@ -2,6 +2,7 @@ import { myDataSource } from "../../DataSource";
 import { Assemblea } from "../Assemblea/Assemblea.entity";
 import { Riga } from "./Riga.entity";
 import { VoteType } from "../Voto/Voto.entity";
+import { DelegaRepository } from "../Delega/Delega.repository";
 
 export const RigaRepository = myDataSource.getRepository(Riga).extend({
     async findAll(): Promise<Riga[] | undefined> {
@@ -16,6 +17,11 @@ export const RigaRepository = myDataSource.getRepository(Riga).extend({
         return this.findOne({
             where : {
                 id : id
+            },
+            relations: {
+                votes: {
+                    member: true
+                }
             }
         })
     },
@@ -32,7 +38,12 @@ export const RigaRepository = myDataSource.getRepository(Riga).extend({
     async getVotingResultByRigaId(rigaId: number): Promise<{ favorevoli: number, contrari: number, astenuti: number } | null> {
         const riga = await this.findOne({
             where: { id: rigaId },
-            relations: { votes: true },
+            relations: { 
+                votes: {
+                    member: true
+                },
+                assembly: true
+            },
         });
 
         if (!riga) return null;  // Se la riga non esiste, restituisci null
@@ -42,20 +53,27 @@ export const RigaRepository = myDataSource.getRepository(Riga).extend({
         }
 
         const results = { favorevoli: 0, contrari: 0, astenuti: 0 };
-
-        riga.votes.forEach(voto => {
+        
+        for (const voto of riga.votes) {
+            const deleghe = await DelegaRepository.count({ 
+                where: { 
+                    delegato: { id: voto.member.id }, 
+                    assembly: { id: riga.assembly.id } 
+                } 
+            });
+            const voteWeight = Math.min(deleghe + 1, 4);
             switch (voto.vote) {
                 case VoteType.favorevole:
-                    results.favorevoli += 1;
+                    results.favorevoli += voteWeight;
                     break;
                 case VoteType.contrario:
-                    results.contrari += 1;
+                    results.contrari += voteWeight;
                     break;
                 case VoteType.astenuto:
-                    results.astenuti += 1;
+                    results.astenuti += voteWeight;
                     break;
             }
-        });
+        }
 
         return results;
     },
