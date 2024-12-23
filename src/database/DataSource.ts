@@ -5,14 +5,17 @@ import { Socio } from "./entities/Socio/Socio.entity";
 import { Voto } from "./entities/Voto/Voto.entity";
 import { Riga } from "./entities/Riga/Riga.entity";
 import { DataSource } from "typeorm";
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 export const myDataSource = new DataSource({
     type: "mysql", // change if needed
-    host: "qr.jemore.it", // database ip
-    port: 3306,
-    username: "root", // insert database information
-    password: "E4TpodDrmhy8P7w5lqaN",
-    database: "assemblee",
+    host: process.env.DATABASE_HOST,
+    port: parseInt(process.env.DATABASE_PORT || '3306'),
+    username: process.env.DATABASE_USER,
+    password: process.env.DATABASE_PASSWORD,
+    database: process.env.DATABASE_NAME,
     entities: [
         Assemblea, Socio, Presenza, Delega, Voto, Riga
     ],
@@ -24,4 +27,4 @@ export const myDataSource = new DataSource({
         query_timeout: 1000,
         statement_timeout: 1000
     }
-})
+});

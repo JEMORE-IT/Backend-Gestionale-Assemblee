@@ -20,7 +20,6 @@
     DATABASE_USER=<your-database-user>
     DATABASE_PASSWORD=<your-database-password>
     DATABASE_NAME=<your-database-name>
-    JWT_SECRET=<your-jwt-secret>
     USERNAME_LOGIN=<your-username>
     PASSWORD=<your-hashed-password>
     ```
