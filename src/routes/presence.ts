@@ -99,34 +99,43 @@ router_presence.post('/bulk-create', async (req: Request, res: Response) => {
     try {
         const presenze = req.body;
         const results = [];
+        const errors = [];
         for (const presenza of presenze) {
             const { presenza: presenzaType, assembly, member } = presenza;
 
             if (!Object.values(PresenceType).includes(presenzaType)) {
-                return res.status(400).json({ message: 'Parametro presenza non valido' });
+                errors.push({ presenza, message: 'Parametro presenza non valido' });
+                continue;
             }
             if (!isNumber(assembly)) {
-                return res.status(400).json({ message: 'Parametro assembly non valido' });
+                errors.push({ presenza, message: 'Parametro assembly non valido' });
+                continue;
             }
             if (!isNumber(member)) {
-                return res.status(400).json({ message: 'Parametro member non valido' });
+                errors.push({ presenza, message: 'Parametro member non valido' });
+                continue;
             }
 
             const assemblyEntity: Assemblea = await AssembleaRepository.findbyId(+assembly);
             const memberEntity: Socio = await SocioRepository.findbyId(+member);
             if (!assemblyEntity) {
-                return res.status(400).json({ message: 'Assemblea non esistente' });
+                errors.push({ presenza, message: 'Assemblea non esistente' });
+                continue;
             }
             if (!memberEntity) {
-                return res.status(400).json({ message: 'Socio non esistente' });
+                errors.push({ presenza, message: 'Socio non esistente' });
+                continue;
             }
 
-            const newPresence: Presenza = await PresenzaRepository.createPresence(presenzaType, assemblyEntity, memberEntity);
-            results.push(newPresence);
+            try {
+                const newPresence: Presenza = await PresenzaRepository.createPresence(presenzaType, assemblyEntity, memberEntity);
+                results.push(newPresence);
+            } catch (err) {
+                errors.push({ presenza, message: 'Errore nella creazione della presenza' });
+            }
         }
-        return res.json(results);
+        return res.json({ results, errors });
     } catch (err) {
-        console.log(err);
         res.status(500).send('Errore nella scrittura sul database');
     }
 });
