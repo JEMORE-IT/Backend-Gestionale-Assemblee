@@ -55,12 +55,17 @@ router_riga.post('/', async (req: Request, res:Response) => {
 
 router_riga.delete('/:id', [checkId],  async (req: Request, res:Response) => {
     try {
-        const result = await RigaRepository.deleteById(+req.params.id)
-        return res.json(result);
+        const riga = await RigaRepository.findbyId(+req.params.id);
+        if (!riga) {
+            return res.status(404).json({ message: 'Riga non esistente' });
+        }
+
+        await RigaRepository.deleteWithVotesById(+req.params.id); // Cancella la riga e i voti associati
+        return res.json({ message: 'Riga e voti associati cancellati con successo' });
     } catch {
-        res.status(500).send('Errore nella scrittura sul database')
+        res.status(500).send('Errore nella scrittura sul database');
     }
-})
+});
 
 router_riga.get('/results/:id', [checkId], async (req: Request, res: Response) => {
     const rigaId = +req.params.id;  // Converti l'ID in un numero

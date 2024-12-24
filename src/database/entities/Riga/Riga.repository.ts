@@ -3,6 +3,7 @@ import { Assemblea } from "../Assemblea/Assemblea.entity";
 import { Riga } from "./Riga.entity";
 import { VoteType } from "../Voto/Voto.entity";
 import { DelegaRepository } from "../Delega/Delega.repository";
+import { VotoRepository } from "../Voto/Voto.repository";
 
 export const RigaRepository = myDataSource.getRepository(Riga).extend({
     async findAll(): Promise<Riga[] | undefined> {
@@ -76,6 +77,15 @@ export const RigaRepository = myDataSource.getRepository(Riga).extend({
         }
 
         return results;
+    },
+
+    async deleteWithVotesById(id: number): Promise<void> {
+        await this.deleteVotesByRigaId(id); // Cancella i voti associati alla riga
+        await this.deleteById(id); // Cancella la riga
+    },
+
+    async deleteVotesByRigaId(rigaId: number): Promise<void> {
+        await VotoRepository.deleteByRigaId(rigaId);
     },
 
     async findByAssemblyId(assemblyId: number): Promise<Riga[]> {

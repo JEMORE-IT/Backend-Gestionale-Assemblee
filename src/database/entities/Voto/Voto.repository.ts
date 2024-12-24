@@ -24,4 +24,8 @@ export const VotoRepository = myDataSource.getRepository(Voto).extend({
         const newMember = await this.create({vote : vote, member: member, riga: riga})
         return this.save(newMember)
     },
+
+    async deleteByRigaId(rigaId: number): Promise<void> {
+        await this.delete({ riga: { id: rigaId } });
+    },
 })
