@@ -10,6 +10,7 @@ import { router_riga } from './routes/riga';
 import { router_vote } from './routes/vote';
 const cookieParser = require('cookie-parser');
 import cors from 'cors'
+import { router_download } from './routes/download';
 
 var app = express();
 const PORT: number = 80;
@@ -42,6 +43,7 @@ app.use('/line', router_riga)
 app.use('/member', router_member)
 app.use('/assembly', router_assembly)
 app.use('/presence', router_presence)
+app.use('/download', router_download)
 app.use('/delegation', router_delegation)
 app.use('/authentication', router_authentication)
 
