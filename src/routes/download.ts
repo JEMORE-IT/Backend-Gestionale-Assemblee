@@ -1,9 +1,11 @@
 import { Router, Request, Response } from "express";
+import verifyToken from "../middleware/verifyToken";
 import { AssembleaRepository } from "../database/entities/Assemblea/Assemblea.repository";
 import { RigaRepository } from "../database/entities/Riga/Riga.repository";
 import { PresenceType } from "../database/entities/Presenza/Presenza.entity";
 
 export var router_download: Router = Router();
+router_download.use(verifyToken)
 
 router_download.get('/:id', async (req: Request, res: Response) => {
     const assemblyId = +req.params.id;
