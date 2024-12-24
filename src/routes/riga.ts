@@ -78,3 +78,20 @@ router_riga.get('/results/:id', [checkId], async (req: Request, res: Response) =
         return res.status(500).send('Errore nel calcolo del risultato delle votazioni');
     }
 })
+
+router_riga.get('/assembly/:id', [checkId], async (req: Request, res: Response) => {
+    try {
+        const assemblyId = +req.params.id;
+        const assembly: Assemblea = await AssembleaRepository.findbyId(assemblyId);
+
+        if (!assembly) {
+            return res.status(404).json({ message: 'Assemblea non esistente' });
+        }
+
+        const righe: Riga[] = await RigaRepository.findByAssemblyId(assemblyId);
+        return res.json(righe);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Errore nella lettura del database');
+    }
+});

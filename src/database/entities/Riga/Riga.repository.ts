@@ -77,4 +77,13 @@ export const RigaRepository = myDataSource.getRepository(Riga).extend({
 
         return results;
     },
+
+    async findByAssemblyId(assemblyId: number): Promise<Riga[]> {
+        return this.find({
+            where: { assembly: { id: assemblyId } },
+            relations: {
+                votes: true
+            }
+        });
+    },
 })
