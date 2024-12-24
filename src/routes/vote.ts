@@ -73,34 +73,43 @@ router_vote.post('/bulk-create', async (req: Request, res: Response) => {
     try {
         const voti = req.body;
         const results = [];
+        const errors = [];
         for (const voto of voti) {
             const { vote, member, riga } = voto;
 
             if (!Object.values(VoteType).includes(vote)) {
-                return res.status(400).json({ message: 'Parametro vote non valido' });
+                errors.push({ voto, message: 'Parametro vote non valido' });
+                continue;
             }
             if (!isNumber(member)) {
-                return res.status(400).json({ message: 'Parametro member non valido' });
+                errors.push({ voto, message: 'Parametro member non valido' });
+                continue;
             }
             if (!isNumber(riga)) {
-                return res.status(400).json({ message: 'Parametro riga non valido' });
+                errors.push({ voto, message: 'Parametro riga non valido' });
+                continue;
             }
 
             const memberEntity: Socio = await SocioRepository.findbyId(+member);
             const rigaEntity: Riga = await RigaRepository.findbyId(+riga);
             if (!memberEntity) {
-                return res.status(400).json({ message: 'Socio non esistente' });
+                errors.push({ voto, message: 'Socio non esistente' });
+                continue;
             }
             if (!rigaEntity) {
-                return res.status(400).json({ message: 'Riga non esistente' });
+                errors.push({ voto, message: 'Riga non esistente' });
+                continue;
             }
 
-            const newVoto: Voto = await VotoRepository.createVote(vote as VoteType, memberEntity, rigaEntity);
-            results.push(newVoto);
+            try {
+                const newVoto: Voto = await VotoRepository.createVote(vote as VoteType, memberEntity, rigaEntity);
+                results.push(newVoto);
+            } catch (err) {
+                errors.push({ voto, message: 'Errore nella creazione del voto' });
+            }
         }
-        return res.json(results);
+        return res.json({ results, errors });
     } catch (err) {
-        console.log(err);
         res.status(500).send('Errore nella scrittura sul database');
     }
 });
