@@ -98,40 +98,52 @@ router_delegation.post('/bulk-create', async (req: Request, res: Response) => {
     try {
         const deleghe = req.body;
         const results = [];
+        const errors = [];
         for (const delega of deleghe) {
             const { assembly, delegante, delegato } = delega;
 
             if (!isNumber(assembly)) {
-                return res.status(400).json({ message: 'Parametro assembly non valido' });
+                errors.push({ delega, message: 'Parametro assembly non valido' });
+                continue;
             }
             if (!isNumber(delegante)) {
-                return res.status(400).json({ message: 'Parametro delegante non valido' });
+                errors.push({ delega, message: 'Parametro delegante non valido' });
+                continue;
             }
             if (!isNumber(delegato)) {
-                return res.status(400).json({ message: 'Parametro delegato non valido' });
+                errors.push({ delega, message: 'Parametro delegato non valido' });
+                continue;
             }
             if (delegante === delegato) {
-                return res.status(400).json({ message: 'Delegante e delegato devono essere persone distinte' });
+                errors.push({ delega, message: 'Delegante e delegato devono essere persone distinte' });
+                continue;
             }
 
             const assemblyEntity: Assemblea = await AssembleaRepository.findbyId(+assembly);
             const deleganteEntity: Socio = await SocioRepository.findbyId(+delegante);
             const delegatoEntity: Socio = await SocioRepository.findbyId(+delegato);
             if (!assemblyEntity) {
-                return res.status(400).json({ message: 'Assemblea non esistente' });
+                errors.push({ delega, message: 'Assemblea non esistente' });
+                continue;
             }
             if (!deleganteEntity) {
-                return res.status(400).json({ message: 'Delegante non esistente' });
+                errors.push({ delega, message: 'Delegante non esistente' });
+                continue;
             }
             if (!delegatoEntity) {
-                return res.status(400).json({ message: 'Delegato non esistente' });
+                errors.push({ delega, message: 'Delegato non esistente' });
+                continue;
             }
 
-            const newDelega: Delega = await DelegaRepository.createDelega(assemblyEntity, deleganteEntity, delegatoEntity);
-            results.push(newDelega);
+            try {
+                const newDelega: Delega = await DelegaRepository.createDelega(assemblyEntity, deleganteEntity, delegatoEntity);
+                results.push(newDelega);
+            } catch (err) {
+                errors.push({ delega, message: 'Errore nella creazione della delega' });
+            }
         }
-        return res.json(results);
-    } catch {
+        return res.json({ results, errors });
+    } catch (err) {
         res.status(500).send('Errore nella scrittura sul database');
     }
 });
