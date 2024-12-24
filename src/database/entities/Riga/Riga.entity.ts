@@ -7,7 +7,7 @@ export class Riga {
     @PrimaryGeneratedColumn()
     id: number
 
-    @Column({type: 'varchar', nullable: false })
+    @Column({type: 'text', nullable: false })
     text: string
     
     @ManyToOne(() => Assemblea, (assemblea) => assemblea.righe, { cascade : false , nullable: false })
