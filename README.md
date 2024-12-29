@@ -22,6 +22,7 @@
     DATABASE_NAME=<your-database-name>
     USERNAME_LOGIN=<your-username>
     PASSWORD=<your-hashed-password>
+    API_BASE_URL=<your-api-base-url>
     ```
 
     Per generare la password hashata, puoi utilizzare il file `hash.js` presente nel progetto:

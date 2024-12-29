@@ -15,9 +15,11 @@ import { router_download } from './routes/download';
 var app = express();
 const PORT: number = 80;
 
+const API_BASE_URL = process.env.API_BASE_URL || 'http://localhost:3000';
+
 app.use(cookieParser());
 app.use(cors({
-  origin: 'http://localhost:3000', // Domini permessi per le richieste
+  origin: API_BASE_URL, // Domini permessi per le richieste
   credentials: true, // Permetti l'invio di cookie
   exposedHeaders: ['Content-Disposition'], // Esponi l'intestazione 'Content-Disposition'
 }));
