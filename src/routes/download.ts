@@ -46,17 +46,21 @@ router_download.get('/:id', async (req: Request, res: Response) => {
             verbale += `- ${delega.delegante.name} delega ${delega.delegato.name}\n`;
         });
 
-        verbale += `\nOrdine del giorno:\n`;
-        for (let i = 0; i < assembly.righe.length; i++) {
-            const riga = assembly.righe[i];
-            verbale += `${i + 1}. ${riga.text}\n`;
-            const results = await RigaRepository.getVotingResultByRigaId(riga.id);
-            if (results) {
-                verbale += `  Risultati:\n`;
-                verbale += `  - Favorevoli: ${results.favorevoli}\n`;
-                verbale += `  - Contrari: ${results.contrari}\n`;
-                verbale += `  - Astenuti: ${results.astenuti}\n`;
+        if (assembly.righe.length > 0) {
+            verbale += `\nOrdine del giorno:\n`;
+            for (let i = assembly.righe.length - 1; i >= 0; i--) {
+                const riga = assembly.righe[i];
+                verbale += `${assembly.righe.length - i}. ${riga.text}\n`;
+                const results = await RigaRepository.getVotingResultByRigaId(riga.id);
+                if (results) {
+                    verbale += `  Risultati:\n`;
+                    verbale += `  - Favorevoli: ${results.favorevoli}\n`;
+                    verbale += `  - Contrari: ${results.contrari}\n`;
+                    verbale += `  - Astenuti: ${results.astenuti}\n`;
+                }
             }
+        } else {
+            verbale += `\nNessun punto all'ordine del giorno.\n`;
         }
 
         res.setHeader('Content-Disposition', `attachment; filename=verbale_${assembly.date}.txt`);
